@@ -1,6 +1,6 @@
 Доброго всем
 
-# pysphinx
+# pg-pysphinx
 
 ¡ ¡ ¡ ALL GLORY TO GLORIA ! ! !
 
