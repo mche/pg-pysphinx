@@ -24,7 +24,7 @@ class Pysphinx:
     
   def next(self):# итерабельность
     row = None
-    try: row = list(self.curs.fetchone)
+    try: row = list(self.curs.fetchone())
     except: raise StopIteration
     
     #~ try: id = row.pop("id", None)
