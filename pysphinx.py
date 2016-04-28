@@ -23,16 +23,18 @@ class Pysphinx:
     
     
   def next(self):# итерабельность
-    row = list(self.curs.fetchone)
-    if not row:
-      raise StopIteration
+    row = None
+    try: row = list(self.curs.fetchone)
+    except: raise StopIteration
+    
     #~ try: id = row.pop("id", None)
     #~ try: weight = row.pop("weight", None)
     #~ attr = [str(x) for x in row.itervalues]
     id = row.pop(0)
-    if self.re_weight.search(row[-1]): weight = row.pop
-    if attr == []: attr = None
-    return (id, weight, attr)
+    weight = None
+    if self.re_weight.search(row[-1]): weight = row.pop()
+    if row == []: row = None
+    return (id, row, weight)
 
 
 ########################################
