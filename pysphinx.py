@@ -15,7 +15,7 @@ class Pysphinx:
     
   def query(self, query):
     self.curs.execute(query)
-    
+    if self.re_weight.search(query): self.q_weight = 1
     
     
   def __iter__(self):# итерабельность
@@ -32,8 +32,10 @@ class Pysphinx:
     #~ attr = [str(x) for x in row.itervalues]
     id = row.pop(0)
     weight = None
-    if self.re_weight.search(row[-1]): weight = row.pop()
+    if self.q_weight: weight = row.pop()
     if row == []: row = None
+    else: row = [str(x) for x in row]
+    
     return (id, row, weight)
 
 
