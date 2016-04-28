@@ -17,11 +17,11 @@
 # Syntax
 
 ```sql 
-select id, weight, attr from pysphinx_select("select ...")
+select id, weight, attr from pysphinx("select ...")
 ```
 
 ```sql 
-select id, weight, attr[0]::int from pysphinx_select("select ...")
+select id, weight, attr[0]::int from pysphinx("select ...")
 ```
 
 # See also

@@ -1,4 +1,4 @@
-CREATE TABLE sphinx_config (
+CREATE if not exists TABLE sphinx_config (
   "key"         varchar(32) NOT NULL primary key,
   "value"       varchar(255) NOT NULL
 );
@@ -11,11 +11,14 @@ INSERT INTO sphinx_config ("key", "value") VALUES
   ('username', ''),
   ('password', ''),
   ('prefix', ''), -- непонятно
-  ('path', '/home/foo'); -- где вы положите pysphinx.py
+  ('path', '/home/foo/bar'); -- где вы положите pysphinx.py
 
-CREATE TYPE pysphinx_result AS (id int, weight int, attr text[]);
+-- update sphinx_config set value = '/home/foo/pg-pysphinx' where key='path';
 
-CREATE OR REPLACE FUNCTION public.pysphinx_select(query text)
+
+CREATE TYPE pysphinx_result AS (id int, attr text[], weight int);
+
+CREATE OR REPLACE FUNCTION public.pysphinx(query text)
  RETURNS SETOF pysphinx_result
  LANGUAGE plpythonu
 AS $code$
@@ -28,7 +31,7 @@ if not 'pysphinx' in GD:
         path.append( conf['path'] )
     from pysphinx import Pysphinx
     GD['pysphinx'] = Pysphinx(conf)
-    plpu.notice('Persistent connection to sphinx make done')
+    plpu.notice('Persistent connection to sphinx makes done')
 
 GD['pysphinx'].query(query)
 return GD['pysphinx'] # итерабельность
