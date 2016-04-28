@@ -10,9 +10,18 @@
 
 Предполагается, что в запросе всегда первая колонка ID записи, т.е. запросы обязательно такие:
 
-* ```sql select * from <index> ... ```
-* ```sql select *, weight() from <index> ... ```
-* ```sql select id from <index> ...```
+*
+```sql
+select * from <index> ...
+```
+*
+```sql
+select *, weight() from <index> ...
+```
+*
+```sql
+select id from <index> ...
+```
 
 ```sql 
 select id, weight, attr from pysphinx_select("select ...")
