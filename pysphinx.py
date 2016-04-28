@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 
 class Pysphinx:
-  
-  
+  '''
+  SELECT *,weight() as  FROM idx1 WHERE MATCH('алла') LIMIT 10
+  '''
   def __init__(self, conf):
     import pymysql
     self.conn = pymysql.connect( host=conf['host'], port=conf['port'], user=conf['username'], passwd=conf['password'], charset='utf8', db='')
@@ -23,9 +24,9 @@ class Pysphinx:
     row = self.curs.fetchone
     if not row:
       raise StopIteration
-    id = row.pop("id", None)
-    weight = row.pop("weight", None)
-    attr = [x for x in row.itervalues]
+    if 'id' in row: id = row.pop("id", None)
+    if 'weight' in row: weight = row.pop("weight", None)
+    attr = [str(x) for x in row.itervalues]
     if attr == []: attr = None
     yield (id, weight, attr)
 

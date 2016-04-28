@@ -28,6 +28,7 @@ if not 'pysphinx' in GD:
         path.append( conf['path'] )
     from pysphinx import Pysphinx
     GD['pysphinx'] = Pysphinx(conf)
+    plpu.notice('Persistent connection to sphinx make done')
 
 GD['pysphinx'].query(query)
 return GD['pysphinx'] # итерабельность
