@@ -15,6 +15,7 @@ class Pysphinx:
     
   def query(self, query):
     self.curs.execute(query)
+    self.q_weight = None
     if self.re_weight.search(query): self.q_weight = 1
     
     
