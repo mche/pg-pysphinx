@@ -7,9 +7,11 @@ class Pysphinx:
   '''
   def __init__(self, conf):
     import pymysql
+    import re
     self.conn = pymysql.connect( host=conf['host'], port=conf['port'], user=conf['username'], passwd=conf['password'], charset='utf8', db='')
     self.curs = self.conn.cursor()
     self.conf = conf
+    self.re_weight = re.compile('weight()')
     
   def query(self, query):
     self.curs.execute(query)
@@ -21,12 +23,14 @@ class Pysphinx:
     
     
   def next(self):# итерабельность
-    row = self.curs.fetchone
+    row = list(self.curs.fetchone)
     if not row:
       raise StopIteration
-    if 'id' in row: id = row.pop("id", None)
-    if 'weight' in row: weight = row.pop("weight", None)
-    attr = [str(x) for x in row.itervalues]
+    #~ try: id = row.pop("id", None)
+    #~ try: weight = row.pop("weight", None)
+    #~ attr = [str(x) for x in row.itervalues]
+    id = row.pop(0)
+    if self.re_weight.search(row[-1]): weight = row.pop
     if attr == []: attr = None
     return (id, weight, attr)
 
