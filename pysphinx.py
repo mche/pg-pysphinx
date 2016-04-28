@@ -28,7 +28,7 @@ class Pysphinx:
     if 'weight' in row: weight = row.pop("weight", None)
     attr = [str(x) for x in row.itervalues]
     if attr == []: attr = None
-    yield (id, weight, attr)
+    return (id, weight, attr)
 
 
 ########################################
