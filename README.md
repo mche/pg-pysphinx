@@ -8,23 +8,20 @@
 
 Это тот самый случай, когда ради маленького ручейка данных городится монстрообразный многотонный мост.
 
-Предполагается, что в запросе всегда первая колонка ID записи, т.е. запросы обязательно такие:
+Предполагается, что в запросе всегда первая колонка ID записи, т.е. запросы к сфинксу обязательно такие:
 
-*
-```sql
-select * from <index> ...
-```
-*
-```sql
-select *, weight() from <index> ...
-```
-*
-```sql
-select id from <index> ...
-```
+* ``` select * from <index> ... ```
+* ``` select *, weight() from <index> ... ```
+* ``` select id from <index> ...```
+
+# Syntax
 
 ```sql 
 select id, weight, attr from pysphinx_select("select ...")
+```
+
+```sql 
+select id, weight, attr[0]::int from pysphinx_select("select ...")
 ```
 
 # See also
