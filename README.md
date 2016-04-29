@@ -13,6 +13,7 @@
 * ``` select * from <index> ... ```
 * ``` select *, weight() from <index> ... ```
 * ``` select id from <index> ...```
+* ``` select id, attr1 from <index> ...```
 
 # Syntax
 
@@ -29,3 +30,5 @@ select id, weight, attr[0]::int from pysphinx("select ...")
 https://github.com/Romamo/sphinxapi/
 
 https://github.com/andy128k/pg-sphinx
+
+https://github.com/PyMySQL/PyMySQL
