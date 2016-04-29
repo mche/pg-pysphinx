@@ -1,3 +1,10 @@
+--[[
+Запускать 
+
+~/openresty/bin/resty sphinx.lua
+
+--]]
+
 local mysql = require "resty.mysql"
 local db, err = mysql:new()
 if not db then
@@ -21,7 +28,7 @@ if not ok then
     return
 end
 
-ngx.say("connected to mysql!")
+ngx.say("connected to sphinx!")
 
 local res, err, errno, sqlstate =
     db:query("SELECT *,weight() FROM idx1 WHERE MATCH('алла') LIMIT 10")

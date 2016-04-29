@@ -16,10 +16,10 @@ INSERT INTO sphinx_config ("key", "value") VALUES
 -- update sphinx_config set value = '/home/foo/pg-pysphinx' where key='path';
 
 
-CREATE TYPE pysphinx_result AS (id int, attr text[], weight int);
+CREATE TYPE sphinx_result AS (id int, attr text[], weight int);
 
 CREATE OR REPLACE FUNCTION public.pysphinx(query text)
- RETURNS SETOF pysphinx_result
+ RETURNS SETOF sphinx_result
  LANGUAGE plpythonu
 AS $code$
 if not 'pysphinx' in GD:
