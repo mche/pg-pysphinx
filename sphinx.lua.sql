@@ -14,6 +14,7 @@ local cur = assert (con:execute("SELECT *,weight() FROM idx1 WHERE MATCH('алл
 --local row = {}
 local row = cur:fetch ({}, "a")
 while row do
+  row['бар']={1,2,3}
   print(cjson.encode(row))
   -- reusing the table of results
   row = cur:fetch (row, "a")
