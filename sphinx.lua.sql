@@ -1,4 +1,5 @@
 do $$
+if _U == nil then _U = {} end
 if _U.sphinx == nil then
   local conf = {}
   for row in server.execute('SELECT * FROM sphinx_config', true) do
