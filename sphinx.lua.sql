@@ -5,5 +5,5 @@ local driver = require "luasql.mysql"
 env = assert (driver.mysql())
 -- connect to data source
 con = assert (env:connect(nil,nil,nil,'127.0.0.1', 9306))
-print con
+print(con)
 $$ language plluau;
