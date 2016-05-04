@@ -2,8 +2,9 @@ do $$
 if _U == nil then _U = {} end
 if _U.sphinx == nil then
   local conf = {}
-  for row in server.execute('SELECT * FROM sphinx_config', true) do
-      conf[row.key] = row.value
+  local row = {}
+  for row in server.rows('SELECT * FROM sphinx_config') do
+      conf[row['key']] = row['value']
     end
   -- load driver
   local driver = require "luasql.mysql"
