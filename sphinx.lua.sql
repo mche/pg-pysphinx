@@ -1,16 +1,24 @@
 do $$
-print(package.cpath)
-package.cpath = package.cpath .. ";" .. os.getenv('HOME') .. "/openresty/lualib/?.so"
-local cjson = require "cjson"
--- load driver
-local driver = require "luasql.mysql"
+if _U.sphinx == nil then
+  local conf = {}
+  for row in server.execute('SELECT * FROM sphinx_config', true) do
+      conf[row.key] = row.value
+    end
+  -- load driver
+  local driver = require "luasql.mysql"
 -- create environment object
-local env = assert (driver.mysql())
+  local env = assert (driver.mysql(), "Проблемы с драйвером mysql")
 -- connect to data source
-local con = assert (env:connect("",nil,nil,'127.0.0.1', 9306))
---print(con)
+  _U.sphinx = assert (env:connect("",nil,nil,conf.host, conf.port), "Не смог соединиться к сфинксу")
+  print("Соединился к сфинксу", _U.sphinx)
+  --print(package.cpath)
+  package.cpath = package.cpath .. ";" .. os.getenv('HOME') .. "/openresty/lualib/?.so"
+end
+
+local cjson = require "cjson"
+
 -- retrieve a cursor
-local cur = assert (con:execute("SELECT *,weight() FROM idx1 WHERE MATCH('алла') LIMIT 10"))
+local cur = assert (_U.sphinx:execute("SELECT *,weight() FROM idx1 WHERE MATCH('алла') LIMIT 10"), "Ошибка запроса к индексу сфинкса")
 --local row = {}
 local row = cur:fetch ({}, "a")
 while row do
@@ -24,6 +32,6 @@ end
 --until row = cur:fetch (row, "a")
 -- close everything
 cur:close() -- already closed because all the result set was consumed
-con:close()
-env:close()
+--con:close()
+--env:close()
 $$ language plluau;
