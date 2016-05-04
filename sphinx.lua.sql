@@ -1,4 +1,7 @@
 do $$
+print(package.cpath)
+package.cpath = package.cpath .. ";" .. os.getenv('HOME') .. "/openresty/lualib/?.so"
+local cjson = require "cjson"
 -- load driver
 local driver = require "luasql.mysql"
 -- create environment object
@@ -11,7 +14,7 @@ local cur = assert (con:execute("SELECT *,weight() FROM idx1 WHERE MATCH('алл
 --local row = {}
 local row = cur:fetch ({}, "a")
 while row do
-  print(row)
+  print(cjson.encode(row))
   -- reusing the table of results
   row = cur:fetch (row, "a")
 end
