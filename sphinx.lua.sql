@@ -1,6 +1,6 @@
 CREATE if not exists TABLE pllua.sphinx_config (
-  "key"         varchar(32) NOT NULL primary key,
-  "value"       varchar(255) NOT NULL
+  "key"         varchar NOT NULL primary key,
+  "value"       varchar NOT NULL
 );
 
 --GRANT ALL ON sphinx_config TO PUBLIC;
@@ -12,7 +12,7 @@ INSERT INTO pllua.sphinx_config ("key", "value") VALUES
   ('cpath', '~/openresty/lualib/?.so')
 ;
 
--- update sphinx_config set value = '/home/foo/pg-pysphinx' where key='path';
+-- update pllua.sphinx_config set value = '~/?.lua' where key='path';
 
 
 CREATE TYPE pllua.sphinx_result AS (id int, attr text[], weight int);
@@ -49,19 +49,12 @@ end
 --local cjson = require "cjson"
 
 -- retrieve a cursor
-local cur = assert (_U.sphinx:execute("SELECT *,weight() FROM idx1 WHERE MATCH('алла') LIMIT 10"), "Ошибка запроса к индексу сфинкса")
---local row = {}
+local cur = assert (_U.sphinx:execute(query), "Ошибка запроса к индексу сфинкса")
 local row = cur:fetch ({}, "a")
 while row do
   --print(cjson.encode(row))
   coroutine.yield{id=row.id, attr=nil, weight=(row['weight'] or row['weight()'])}
   row = cur:fetch (row, "a")-- reusing the table of results
 end
---repeat
---  print(row)
---until row = cur:fetch (row, "a")
--- close everything
 cur:close() -- already closed because all the result set was consumed
---con:close()
---env:close()
 $code$ language plluau;
