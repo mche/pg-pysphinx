@@ -30,7 +30,6 @@ if _U.sphinx == nil then
   --print(package.cpath)
   local home = os.getenv('HOME')
   if conf.cpath and conf.cpath ~= "" then
-    -- package.cpath = package.cpath .. ";" .. os.getenv('HOME') .. "/openresty/lualib/?.so"
     package.cpath = package.cpath .. ";" .. string.gsub(conf.cpath, "~", home)
   end
   if conf.path and conf.path ~= "" then
@@ -53,8 +52,17 @@ local cur = assert (_U.sphinx:execute(query), "Ошибка запроса к и
 local row = cur:fetch ({}, "a")
 while row do
   --print(cjson.encode(row))
-  coroutine.yield{id=row.id, attr=nil, weight=(row['weight'] or row['weight()'])}
+  local o = {id=row.id, attr=nil, weight=(row['weight'] or row['weight()'])}
+  row.id = nil
+  row['weight'] = nil
+  row['weight()'] = nil
+  local attr = {}
+  for k,v in pairs(row) do attr[#attr+1] = v end
+  if #attr > 0 then o.attr = attr end
+  coroutine.yield(o)
   row = cur:fetch (row, "a")-- reusing the table of results
 end
 cur:close() -- already closed because all the result set was consumed
 $code$ language plluau;
+
+--select * from pllua.sphinx('SELECT * FROM idx1 WHERE MATCH(''алла'') LIMIT 10;');
