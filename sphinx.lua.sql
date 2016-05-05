@@ -1,4 +1,4 @@
-CREATE if not exists TABLE pllua.sphinx_config (
+CREATE TABLE IF NOT EXISTS pllua.sphinx_config (
   "key"         varchar NOT NULL primary key,
   "value"       varchar NOT NULL
 );

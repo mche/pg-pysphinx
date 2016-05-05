@@ -1,4 +1,4 @@
-CREATE if not exists TABLE sphinx_config (
+CREATE TABLE IF NOT EXISTS sphinx_config (
   "key"         varchar(32) NOT NULL primary key,
   "value"       varchar(255) NOT NULL
 );
